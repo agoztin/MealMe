@@ -24,7 +24,7 @@ object ApiService {
 
         Retrofit.Builder()
             .baseUrl(URL)
-            .client(client)
+//            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(MealDBService::class.java)

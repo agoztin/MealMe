@@ -1,7 +1,6 @@
 package com.example.mealme.ui.main
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mealme.model.Meal
 import com.example.mealme.net.repositories.MealsRepository

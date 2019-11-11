@@ -39,7 +39,6 @@
         android:text="Instructions"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/meal_item_image"
         app:layout_constraintEnd_toEndOf="@+id/meal_item_title"
         app:layout_constraintStart_toEndOf="@+id/meal_item_image"
         app:layout_constraintTop_toTopOf="@+id/meal_item_image" />

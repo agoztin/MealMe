@@ -23,7 +23,7 @@ class MainFragment : Fragment() {
     private val TAG = this.javaClass.name
     private lateinit var viewModel: MainViewModel
     private var mealsList = ArrayList<Meal>()
-    private val mealAdapter = MealAdapter(mealsList)
+    private var mealAdapter = MealAdapter(mealsList)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,13 +43,6 @@ class MainFragment : Fragment() {
         setButtonsListeners()
     }
 
-    private fun setObservers() {
-        viewModel.getSearchResult().observe(this, Observer<ArrayList<Meal>> { meals ->
-            mealsList = meals
-            mealAdapter.notifyDataSetChanged()
-        })
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -57,7 +50,17 @@ class MainFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = mealAdapter
         }
+
     }
+
+    private fun setObservers() {
+        viewModel.getSearchResult().observe(this, Observer<ArrayList<Meal>> { meals ->
+            mealsList.clear()
+            mealsList.addAll(meals)
+            mealAdapter.notifyDataSetChanged()
+        })
+    }
+
 
     private fun setButtonsListeners() {
         // Search button

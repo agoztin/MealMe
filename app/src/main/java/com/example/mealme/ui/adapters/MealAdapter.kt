@@ -1,7 +1,5 @@
 package com.example.mealme.ui.adapters
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,13 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mealme.R
 import com.example.mealme.model.Meal
-import com.example.mealme.net.ImageDownloader
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.net.URL
 
 
-class MealAdapter(private val mealList: ArrayList<Meal>) :
+class MealAdapter(val mealList: ArrayList<Meal>) :
     RecyclerView.Adapter<MealAdapter.MealViewHolder>() {
 
     val TAG = this.javaClass.name
@@ -29,6 +23,7 @@ class MealAdapter(private val mealList: ArrayList<Meal>) :
     override fun getItemCount(): Int = mealList.size
 
     override fun onBindViewHolder(holder: MealViewHolder, position: Int) {
+        Log.e(TAG, "Binding ${mealList[position]}")
         holder.bind(mealList[position])
     }
 
@@ -45,28 +40,26 @@ class MealAdapter(private val mealList: ArrayList<Meal>) :
             val image = itemView.findViewById<ImageView>(R.id.meal_item_image)
             title.text = meal.name
             instructions.text = meal.instructions
-            ImageDownloader().execute(meal.thumbURL)
-
-
+//            image.setImageBitmap(fetchImage(meal.thumbURL))
         }
 
-        suspend fun fetchImage(url: String) : Bitmap? {
-            var bitmap: Bitmap? = null
-
-            withContext(Dispatchers.IO) {
-                try {
-                    val inputStream = URL(url).openStream()       // Download Image from URL
-                    bitmap = BitmapFactory.decodeStream(inputStream)    // Decode Bitmap
-
-                    inputStream.close()
-                } catch (e: Exception) {
-                    Log.e(">>>>>>>", "Exception 1, Something went wrong!")
-                    e.printStackTrace()
-                }
-
-            }
-
-            return bitmap
-        }
+//        suspend fun fetchImage(url: String) : Bitmap? {
+//            var bitmap: Bitmap? = null
+//
+//            withContext(Dispatchers.IO) {
+//                try {
+//                    val inputStream = URL(url).openStream()       // Download Image from URL
+//                    bitmap = BitmapFactory.decodeStream(inputStream)    // Decode Bitmap
+//
+//                    inputStream.close()
+//                } catch (e: Exception) {
+//                    Log.e(">>>>>>>", "Exception 1, Something went wrong!")
+//                    e.printStackTrace()
+//                }
+//
+//            }
+//
+//            return bitmap
+//        }
     }
 }
