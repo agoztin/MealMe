@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MealMe</string>
+    <string name="fmain_search_hint">Search Meal, Ingredients, Category</string>
+</resources>
