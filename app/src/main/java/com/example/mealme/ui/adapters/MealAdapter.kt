@@ -2,7 +2,6 @@ package com.example.mealme.ui.adapters
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -19,7 +18,7 @@ import java.net.URL
 import kotlin.coroutines.CoroutineContext
 
 
-class MealAdapter(val mealList: ArrayList<Meal>) :
+class MealAdapter(val mealList: ArrayList<Meal>, val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<MealAdapter.MealViewHolder>() {
 
     val TAG = this.javaClass.name
@@ -32,7 +31,7 @@ class MealAdapter(val mealList: ArrayList<Meal>) :
     override fun getItemCount(): Int = mealList.size
 
     override fun onBindViewHolder(holder: MealViewHolder, position: Int) {
-        holder.bind(mealList[position])
+        holder.bind(mealList[position], onItemClickListener)
     }
 
 
@@ -51,7 +50,7 @@ class MealAdapter(val mealList: ArrayList<Meal>) :
         //+ job
 
 
-        fun bind(meal: Meal) {
+        fun bind(meal: Meal, onClickListener: OnItemClickListener) {
             val title = itemView.findViewById<TextView>(R.id.meal_item_title)
             val instructions = itemView.findViewById<TextView>(R.id.meal_item_instructions)
             val image = itemView.findViewById<ImageView>(R.id.meal_item_image)
@@ -61,6 +60,10 @@ class MealAdapter(val mealList: ArrayList<Meal>) :
                 instructions.text = meal.instructions.take(150).plus("...")
             else
                 instructions.text = meal.instructions
+
+            itemView.setOnClickListener {
+                onClickListener.OnItemClick(meal)
+            }
 
             launch {
                 fetchImage(image, meal.id, meal.thumbURL)
@@ -91,12 +94,20 @@ class MealAdapter(val mealList: ArrayList<Meal>) :
                         }
                         inputStream.close()
                     }
-                    image.setImageBitmap(bitmap)
                 } catch (e: Exception) {
                     Log.e(">>>>>>>", "Exception 1, Something went wrong!")
                     e.printStackTrace()
                 }
             }
+
+            image.setImageBitmap(bitmap)
         }
+    }
+
+    /**
+     * OnClick Interface
+     */
+    interface OnItemClickListener {
+        fun OnItemClick(item: Meal)
     }
 }

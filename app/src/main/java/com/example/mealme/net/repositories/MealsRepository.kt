@@ -3,6 +3,8 @@ package com.example.mealme.net.repositories
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.mealme.db.IngredientDao
+import com.example.mealme.db.MealDao
 import com.example.mealme.model.Meal
 import com.example.mealme.model.Meals
 import com.example.mealme.net.ApiService
@@ -10,14 +12,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MealsRepository {
+class MealsRepository(val mealsDao: MealDao, val ingredientDao: IngredientDao) {
 
     val TAG = this.javaClass.name
 
     val searchData = MutableLiveData<ArrayList<Meal>>()
 
     fun search(mealName: String) {
-
+        // Web Service call
         ApiService.instance.searchByMeal(mealName).enqueue(object: Callback<Meals> {
             override fun onFailure(call: Call<Meals>, t: Throwable) {
                 Log.e(TAG, "Error: ${t.message}")
@@ -30,5 +32,10 @@ class MealsRepository {
                 }
             }
         })
+    }
+
+    suspend fun save(meal: Meal) {
+        mealsDao.insertMeal(meal)
+        ingredientDao.insertIngredients(meal.ingredients)
     }
 }

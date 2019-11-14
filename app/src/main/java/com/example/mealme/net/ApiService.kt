@@ -1,5 +1,7 @@
 package com.example.mealme.net
 
+import com.example.mealme.model.Meal
+import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.OkHttpClient
@@ -21,11 +23,12 @@ object ApiService {
             addInterceptor(interceptor)
         }.build()
 
+        val deserializer = GsonBuilder().registerTypeAdapter(Meal::class.java, MealDeserializer()).create()
 
         Retrofit.Builder()
             .baseUrl(URL)
 //            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(deserializer))
             .build()
             .create(MealDBService::class.java)
     }

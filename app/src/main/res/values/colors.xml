@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Theme -->
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#FB8C00</color>
+    <color name="colorPrimaryDark">#D37701</color>
+    <color name="colorAccent">#F4511E</color>
     <color name="colorBackground">#000000</color>
 
     <!-- Main Fragment -->
     <color name="fmainInputTextSearchHint">#65FB8C00</color>
     <color name="fmainInputTextSearch">#FB8C00</color>
+
+    <!-- Detail Fragment -->
+    <color name="fdetailTitle">#FB8C00</color>
+    <color name="fdetailIngredients">#FFD9A7</color>
+    <color name="fdetailInstructions">#EEEEEE</color>
 </resources>
