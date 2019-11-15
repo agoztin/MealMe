@@ -1,6 +1,5 @@
 package com.example.mealme.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
@@ -12,15 +11,18 @@ import com.example.mealme.model.Ingredient
 interface IngredientDao {
 
     @Insert(onConflict = REPLACE)
-    suspend fun insertIngredient(ingredient: Ingredient)
+    suspend fun insert(ingredient: Ingredient)
 
     @Query("SELECT * FROM Ingredient WHERE id = :mealId")
-    suspend fun getIngredients(mealId: Int): List<Ingredient>
+    suspend fun get(mealId: Int): List<Ingredient>
+
+    @Query("DELETE FROM Ingredient WHERE id = :mealId")
+    suspend fun delete(mealId: Int)
 
     @Transaction
     suspend fun insertIngredients(ingredients: ArrayList<Ingredient>) {
         ingredients.forEach {
-            insertIngredient(it)
+            insert(it)
         }
     }
 }

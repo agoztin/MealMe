@@ -41,11 +41,12 @@ class MealsRepository(val mealsDao: MealDao, val ingredientDao: IngredientDao) {
 
     suspend fun load(mealID: Int): Meal? {
         val meal = mealsDao.get(mealID)
-        meal?.ingredients = ingredientDao.getIngredients(mealID) as ArrayList<Ingredient>
+        meal?.ingredients = ingredientDao.get(mealID) as ArrayList<Ingredient>
         return meal
     }
 
     suspend fun delete(meal: Meal) {
         mealsDao.delete(meal.id)
+        ingredientDao.delete(meal.id)
     }
 }
