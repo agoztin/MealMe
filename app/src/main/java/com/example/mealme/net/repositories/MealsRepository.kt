@@ -1,10 +1,10 @@
 package com.example.mealme.net.repositories
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mealme.db.IngredientDao
 import com.example.mealme.db.MealDao
+import com.example.mealme.model.Ingredient
 import com.example.mealme.model.Meal
 import com.example.mealme.model.Meals
 import com.example.mealme.net.ApiService
@@ -35,7 +35,17 @@ class MealsRepository(val mealsDao: MealDao, val ingredientDao: IngredientDao) {
     }
 
     suspend fun save(meal: Meal) {
-        mealsDao.insertMeal(meal)
+        mealsDao.insert(meal)
         ingredientDao.insertIngredients(meal.ingredients)
+    }
+
+    suspend fun load(mealID: Int): Meal? {
+        val meal = mealsDao.get(mealID)
+        meal?.ingredients = ingredientDao.getIngredients(mealID) as ArrayList<Ingredient>
+        return meal
+    }
+
+    suspend fun delete(meal: Meal) {
+        mealsDao.delete(meal.id)
     }
 }

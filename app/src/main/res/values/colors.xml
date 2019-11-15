@@ -14,4 +14,7 @@
     <color name="fdetailTitle">#FB8C00</color>
     <color name="fdetailIngredients">#FFD9A7</color>
     <color name="fdetailInstructions">#EEEEEE</color>
+    <color name="fdetailButtonSaveEnabled">#FB8C00</color>
+    <color name="fdetailButtonSaveDisabled">#AAAAAA</color>
+    <color name="fdetailButtonSaveStored">#69BD00</color>
 </resources>

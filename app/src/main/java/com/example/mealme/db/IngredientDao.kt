@@ -15,7 +15,7 @@ interface IngredientDao {
     suspend fun insertIngredient(ingredient: Ingredient)
 
     @Query("SELECT * FROM Ingredient WHERE id = :mealId")
-    fun getIngredients(mealId: Int): LiveData<List<Ingredient>>
+    suspend fun getIngredients(mealId: Int): List<Ingredient>
 
     @Transaction
     suspend fun insertIngredients(ingredients: ArrayList<Ingredient>) {

@@ -1,6 +1,5 @@
 package com.example.mealme.ui.detail
 
-import android.content.ContextWrapper
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
@@ -11,10 +10,12 @@ import com.example.mealme.model.Meal
 import android.view.*
 import android.widget.TableRow
 import android.widget.TextView
-import androidx.core.text.HtmlCompat
-import androidx.core.widget.TextViewCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.mealme.ui.main.MainViewModel
+import com.example.mealme.util.ImageFetcher
 import kotlinx.android.synthetic.main.detail_fragment.*
+import kotlinx.coroutines.launch
 
 
 class DetailFragment : Fragment() {
@@ -26,6 +27,7 @@ class DetailFragment : Fragment() {
     private val TAG = this.javaClass.name
     private lateinit var viewModel: MainViewModel
     private var mealInstance: Meal? = null
+    private var mealStored = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +55,9 @@ class DetailFragment : Fragment() {
 
     private fun setObservers() {
         viewModel.selectedMeal.observe(this, Observer<Meal> { meal ->
+            mealInstance = meal
+
+            // Complete title, ingredients and instructions
             fdetail_title.text = meal.name
             fdetail_instructions.text = getString(R.string.instructions)
                 .plus("\n")
@@ -71,16 +76,35 @@ class DetailFragment : Fragment() {
                     })
                 }
             }
-            mealInstance = meal
+
+            // Fetch image from local or remote if needed
+            viewLifecycleOwner.lifecycleScope.launch {
+                ImageFetcher.get(fdetail_image, meal.thumbURL, meal.imageFileName)
+            }
+
+            // Enable or not fab button
+            viewModel.loadMeal(meal.id).observe(this, Observer { storedMeal ->
+                mealStored = storedMeal != null
+                if (mealStored) {
+                    fdetail_add_favorite.backgroundTintList = ContextCompat.getColorStateList(activity!!.applicationContext, R.color.fdetailButtonSaveStored)
+                } else {
+                    fdetail_add_favorite.backgroundTintList = ContextCompat.getColorStateList(activity!!.applicationContext, R.color.fdetailButtonSaveEnabled)
+                }
+            })
         })
     }
 
 
     private fun setButtonsListeners() {
         fdetail_add_favorite.setOnClickListener {
-            if (mealInstance != null) {
+            if (mealStored) {
+                viewModel.deleteMeal(mealInstance!!)
+                fdetail_add_favorite.backgroundTintList = ContextCompat.getColorStateList(activity!!.applicationContext, R.color.fdetailButtonSaveEnabled)
+            } else {
                 viewModel.saveMeal(mealInstance!!)
+                fdetail_add_favorite.backgroundTintList = ContextCompat.getColorStateList(activity!!.applicationContext, R.color.fdetailButtonSaveStored)
             }
+            mealStored = mealStored.not()
         }
     }
 

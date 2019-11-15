@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mealme.R
 import com.example.mealme.model.Meal
+import com.example.mealme.util.ImageFetcher
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileInputStream
@@ -66,25 +67,26 @@ class MealAdapter(val mealList: ArrayList<Meal>, val onItemClickListener: OnItem
             }
 
             launch {
-                fetchImage(image, meal.id, meal.thumbURL)
+                //fetchImage(image, meal)
+                ImageFetcher.get(image, meal.thumbURL, meal.imageFileName)
             }
         }
 
-        suspend fun fetchImage(image: ImageView, imageID: Int, url: String) {
+        suspend fun fetchImage(image: ImageView, meal: Meal) {
             var bitmap: Bitmap? = null
 
             // Create image name to local store
-            val filename = imageID.toString() + url.takeLastWhile { it != '/' }
+            val filename = meal.id.toString() + meal.thumbURL.takeLastWhile { it != '/' }
             val file = File(image.context.filesDir, filename)
 
             withContext(Dispatchers.IO) {
                 try {
-                    if (file.exists()) {
+                    if (file.exists() && file.length() > 0) {
                         val inputStream = FileInputStream(file)
                         bitmap = BitmapFactory.decodeStream(inputStream)
                         inputStream.close()
                     } else {
-                        val inputStream = URL(url).openStream()
+                        val inputStream = URL(meal.thumbURL).openStream()
                         bitmap = BitmapFactory.decodeStream(inputStream)
                         val outputStrem = FileOutputStream(file)
                         bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, outputStrem)

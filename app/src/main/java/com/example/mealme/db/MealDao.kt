@@ -9,8 +9,11 @@ import com.example.mealme.model.Meal
 @Dao
 interface MealDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMeal(meal: Meal)
+    suspend fun insert(meal: Meal)
 
     @Query("SELECT * FROM Meal WHERE id = :id")
-    suspend fun getMeal(id: Int): Meal
+    suspend fun get(id: Int): Meal?
+
+    @Query("DELETE FROM Meal WHERE id = :id")
+    suspend fun delete(id: Int)
 }

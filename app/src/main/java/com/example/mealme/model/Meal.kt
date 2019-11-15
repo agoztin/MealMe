@@ -16,4 +16,9 @@ data class Meal (
     @Ignore
     var ingredients: ArrayList<Ingredient> = ArrayList()
 ) {
+
+    @delegate:Ignore
+    val imageFileName by lazy {
+        id.toString() + thumbURL.takeLastWhile { it != '/' }
+    }
 }

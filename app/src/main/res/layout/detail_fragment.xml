@@ -96,6 +96,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:tint="#FFFFFF"
+        app:backgroundTint="@color/fdetailButtonSaveDisabled"
         app:srcCompat="@drawable/ic_dinning" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

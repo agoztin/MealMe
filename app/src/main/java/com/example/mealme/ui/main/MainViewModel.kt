@@ -35,7 +35,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun deleteMeal(meal: Meal) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mealsRepository.delete(meal)
+        }
+    }
+
     fun selectMeal(meal: Meal) {
         selectedMeal.value = meal
+    }
+
+    fun loadMeal(mealID: Int): LiveData<Meal?> = liveData {
+        emit(mealsRepository.load(mealID))
     }
 }
