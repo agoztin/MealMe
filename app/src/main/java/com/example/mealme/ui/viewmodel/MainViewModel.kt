@@ -1,7 +1,6 @@
-package com.example.mealme.ui.main
+package com.example.mealme.ui.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.mealme.db.AppDatabase
 import com.example.mealme.model.Meal
@@ -21,24 +20,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         mealsRepository = MealsRepository(mealsDao, ingredientDao)
     }
 
-    fun getSearchResult(): LiveData<ArrayList<Meal>> {
-        return mealsRepository.searchData
-    }
+    fun getMealsLiveData(): LiveData<ArrayList<Meal>?> = mealsRepository.meals
 
-    fun searchMeals(mealName: String) {
+    fun searchMeals(mealName: String) = viewModelScope.launch {
         mealsRepository.search(mealName)
     }
 
-    fun saveMeal(meal: Meal) {
-        viewModelScope.launch(Dispatchers.IO) {
-            mealsRepository.save(meal)
-        }
+    fun cancelSearch() = mealsRepository.cancelSearch()
+
+    fun saveMeal(meal: Meal) = viewModelScope.launch(Dispatchers.IO) {
+        mealsRepository.save(meal)
     }
 
-    fun deleteMeal(meal: Meal) {
-        viewModelScope.launch(Dispatchers.IO) {
-            mealsRepository.delete(meal)
-        }
+    fun deleteMeal(meal: Meal) = viewModelScope.launch(Dispatchers.IO) {
+        mealsRepository.delete(meal)
     }
 
     fun selectMeal(meal: Meal) {
@@ -48,4 +43,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun loadMeal(mealID: Int): LiveData<Meal?> = liveData {
         emit(mealsRepository.load(mealID))
     }
+
+    fun loadFavouritesMeals() = viewModelScope.launch {
+        mealsRepository.loadFavourites()
+    }
+
+    fun loadSearchResult() = mealsRepository.loadSearchResult()
 }

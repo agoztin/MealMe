@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#D37701</color>
     <color name="colorAccent">#F4511E</color>
     <color name="colorBackground">#000000</color>
+    <color name="defaultTextColor">#FFFFFF</color>
 
     <!-- Main Fragment -->
     <color name="fmainInputTextSearchHint">#65FB8C00</color>

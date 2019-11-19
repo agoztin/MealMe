@@ -15,7 +15,7 @@ object ApiService {
 
 
 
-    val instance by lazy {
+    val instance: MealDBService by lazy {
         val interceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }

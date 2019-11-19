@@ -1,8 +1,7 @@
-package com.example.mealme.ui.detail
+package com.example.mealme.ui.fragments
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.mealme.R
@@ -12,7 +11,7 @@ import android.widget.TableRow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.mealme.ui.main.MainViewModel
+import com.example.mealme.ui.viewmodel.MainViewModel
 import com.example.mealme.util.ImageFetcher
 import kotlinx.android.synthetic.main.detail_fragment.*
 import kotlinx.coroutines.launch

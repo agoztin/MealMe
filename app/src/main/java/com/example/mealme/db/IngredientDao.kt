@@ -1,5 +1,6 @@
 package com.example.mealme.db
 
+import android.util.Log
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
@@ -13,10 +14,10 @@ interface IngredientDao {
     @Insert(onConflict = REPLACE)
     suspend fun insert(ingredient: Ingredient)
 
-    @Query("SELECT * FROM Ingredient WHERE id = :mealId")
+    @Query("SELECT * FROM Ingredient WHERE idMeal = :mealId")
     suspend fun get(mealId: Int): List<Ingredient>
 
-    @Query("DELETE FROM Ingredient WHERE id = :mealId")
+    @Query("DELETE FROM Ingredient WHERE idMeal = :mealId")
     suspend fun delete(mealId: Int)
 
     @Transaction

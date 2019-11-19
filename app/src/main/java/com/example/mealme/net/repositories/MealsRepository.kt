@@ -16,11 +16,17 @@ class MealsRepository(val mealsDao: MealDao, val ingredientDao: IngredientDao) {
 
     val TAG = this.javaClass.name
 
-    val searchData = MutableLiveData<ArrayList<Meal>>()
+    val meals = MutableLiveData<ArrayList<Meal>?>()
+    var lastSearch: Call<Meals>? = null
+
+    var searchResult = ArrayList<Meal>()
+    var favourites = ArrayList<Meal>()
 
     fun search(mealName: String) {
+        meals.value = null
         // Web Service call
-        ApiService.instance.searchByMeal(mealName).enqueue(object: Callback<Meals> {
+        lastSearch = ApiService.instance.searchByMeal(mealName)
+        lastSearch?.enqueue(object: Callback<Meals> {
             override fun onFailure(call: Call<Meals>, t: Throwable) {
                 Log.e(TAG, "Error: ${t.message}")
                 Log.e(TAG, "Detail: ${t.stackTrace.toList()}")
@@ -28,14 +34,23 @@ class MealsRepository(val mealsDao: MealDao, val ingredientDao: IngredientDao) {
 
             override fun onResponse(call: Call<Meals>, response: Response<Meals>) {
                 if (response.isSuccessful) {
-                    searchData.value = response.body()?.meals
+                    searchResult = response.body()?.meals!!
+                    meals.value = searchResult
                 }
             }
         })
     }
 
+    fun cancelSearch() {
+        if (lastSearch != null)
+            lastSearch?.cancel()
+    }
+
     suspend fun save(meal: Meal) {
         mealsDao.insert(meal)
+        meal.ingredients.forEach {
+            it.idMeal = meal.id
+        }
         ingredientDao.insertIngredients(meal.ingredients)
     }
 
@@ -48,5 +63,18 @@ class MealsRepository(val mealsDao: MealDao, val ingredientDao: IngredientDao) {
     suspend fun delete(meal: Meal) {
         mealsDao.delete(meal.id)
         ingredientDao.delete(meal.id)
+    }
+
+    suspend fun loadFavourites() {
+        val mealsLoaded = mealsDao.getAll()
+        mealsLoaded.forEach { meal ->
+            meal.ingredients = ingredientDao.get(meal.id) as ArrayList<Ingredient>
+        }
+        favourites = mealsLoaded as ArrayList<Meal>
+        meals.value = favourites
+    }
+
+    fun loadSearchResult() {
+        meals.value = searchResult
     }
 }
