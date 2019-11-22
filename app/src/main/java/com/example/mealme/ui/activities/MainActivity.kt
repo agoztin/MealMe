@@ -1,26 +1,19 @@
 package com.example.mealme.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.lifecycle.ViewModelProviders
 import com.example.mealme.R
 import com.example.mealme.ui.fragments.ResultsFragment
 import com.example.mealme.ui.fragments.SearchFragment
-import com.example.mealme.ui.viewmodel.MainViewModel
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.main_activity.*
-import kotlinx.android.synthetic.main.results_fragment.*
 
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var viewModel: MainViewModel
+class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-
-        viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()

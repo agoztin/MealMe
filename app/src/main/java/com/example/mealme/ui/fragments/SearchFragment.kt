@@ -3,16 +3,12 @@ package com.example.mealme.ui.fragments
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mealme.model.Meal
-import com.example.mealme.ui.adapters.MealAdapter
 import kotlinx.android.synthetic.main.search_fragment.*
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import com.example.mealme.R
-import com.example.mealme.ui.viewmodel.MainViewModel
+import com.example.mealme.viewmodel.MainViewModel
 
 
 class SearchFragment : Fragment() {
@@ -23,7 +19,6 @@ class SearchFragment : Fragment() {
 
     private val TAG = this.javaClass.name
     private lateinit var viewModel: MainViewModel
-    private var mealsList = ArrayList<Meal>()
 
 
     override fun onCreateView(
@@ -35,9 +30,6 @@ class SearchFragment : Fragment() {
             ViewModelProviders.of(this)[MainViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-        // Set the observers
-//        setObservers()
-
         return inflater.inflate(R.layout.search_fragment, container, false)
     }
 
@@ -47,13 +39,6 @@ class SearchFragment : Fragment() {
 
         // Set buttons handlers
         setButtonsListeners()
-    }
-
-
-    private fun setObservers() {
-        viewModel.getMealsLiveData().observe(this, Observer { meals ->
-
-        })
     }
 
 
@@ -75,7 +60,7 @@ class SearchFragment : Fragment() {
         }
 
         // On press enter
-        fsearch_searched_text.setOnKeyListener { v, keyCode, event ->
+        fsearch_searched_text.setOnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_NUMPAD_ENTER) {
                 fsearch_btn_search.callOnClick()
             }

@@ -11,7 +11,7 @@ import android.widget.TableRow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.mealme.ui.viewmodel.MainViewModel
+import com.example.mealme.viewmodel.MainViewModel
 import com.example.mealme.util.ImageFetcher
 import kotlinx.android.synthetic.main.detail_fragment.*
 import kotlinx.coroutines.launch

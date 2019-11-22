@@ -2,24 +2,21 @@ package com.example.mealme.ui.fragments
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mealme.model.Meal
 import com.example.mealme.ui.adapters.MealAdapter
-import kotlinx.android.synthetic.main.search_fragment.*
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.Color
-import android.util.Log
 import android.view.*
-import android.view.inputmethod.InputMethodManager
-import androidx.core.view.setPadding
+import androidx.lifecycle.ViewModelProvider
 import com.example.mealme.R
-import com.example.mealme.ui.viewmodel.MainViewModel
+import com.example.mealme.viewmodel.MainViewModel
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.results_fragment.*
+import javax.inject.Inject
 
 
-class ResultsFragment(private val type: TYPE) : Fragment() {
+class ResultsFragment(private val type: TYPE) : DaggerFragment() {
 
     companion object {
         enum class TYPE {
@@ -30,9 +27,11 @@ class ResultsFragment(private val type: TYPE) : Fragment() {
     }
 
     private val TAG = this.javaClass.name
-    private lateinit var viewModel: MainViewModel
     private var mealsList = ArrayList<Meal>()
     private lateinit var mealAdapter: MealAdapter
+
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModel: MainViewModel
 
 
     override fun onCreateView(
@@ -41,7 +40,7 @@ class ResultsFragment(private val type: TYPE) : Fragment() {
     ): View {
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this)[MainViewModel::class.java]
+            ViewModelProviders.of(this, viewModelFactory)[MainViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
         // Set the observers
