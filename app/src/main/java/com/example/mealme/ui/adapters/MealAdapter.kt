@@ -53,14 +53,13 @@ class MealAdapter(val mealList: ArrayList<Meal>, val onItemClickListener: OnItem
 
         fun bind(meal: Meal, onClickListener: OnItemClickListener) {
             val title = itemView.findViewById<TextView>(R.id.meal_item_title)
-            val instructions = itemView.findViewById<TextView>(R.id.meal_item_instructions)
+            val category = itemView.findViewById<TextView>(R.id.meal_item_category)
+            val tags = itemView.findViewById<TextView>(R.id.meal_item_tags)
             val image = itemView.findViewById<ImageView>(R.id.meal_item_image)
 
             title.text = meal.name
-            if (meal.instructions.length > 150)
-                instructions.text = meal.instructions.take(150).plus("...")
-            else
-                instructions.text = meal.instructions
+            category.text = meal.category
+            tags.text = meal.tags
 
             itemView.setOnClickListener {
                 onClickListener.OnItemClick(meal)

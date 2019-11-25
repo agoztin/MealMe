@@ -22,7 +22,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:text="Name"
-            style="@style/FragmentMain.ResultItem"
+            style="@style/FragmentMain.ResultItem.Title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/meal_item_image"
             app:layout_constraintTop_toTopOf="parent" />
@@ -38,18 +38,43 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/meal_item_instructions"
+            android:id="@+id/meal_item_category"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="Instructions"
-            android:textColor="#DDDDDD"
-            android:textSize="18sp"
+            android:text="Category"
+            style="@style/FragmentMain.ResultItem.Category"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/meal_item_image"
             app:layout_constraintTop_toBottomOf="@+id/meal_item_title" />
+
+        <TextView
+            android:id="@+id/meal_item_tags_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Tags:"
+            android:textStyle="bold"
+            style="@style/FragmentMain.ResultItem.Tags"
+            app:layout_constraintStart_toEndOf="@+id/meal_item_image"
+            app:layout_constraintTop_toBottomOf="@+id/meal_item_category" />
+
+        <TextView
+            android:id="@+id/meal_item_tags"
+            style="@style/FragmentMain.ResultItem.Tags"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Tag"
+            app:layout_constraintBottom_toBottomOf="@+id/meal_item_tags_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/meal_item_tags_title"
+            app:layout_constraintTop_toTopOf="@+id/meal_item_tags_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

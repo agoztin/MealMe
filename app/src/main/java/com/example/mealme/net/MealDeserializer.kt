@@ -19,6 +19,7 @@ class MealDeserializer : JsonDeserializer<Meal> {
                 jsonObj.get("idMeal").asInt,
                 jsonObj.get("strMeal").asString,
                 jsonObj.get("strCategory").asString,
+                if (jsonObj.get("strTags").isJsonNull) "None" else jsonObj.get("strTags").asString,
                 jsonObj.get("strInstructions").asString,
                 jsonObj.get("strMealThumb").asString
             )

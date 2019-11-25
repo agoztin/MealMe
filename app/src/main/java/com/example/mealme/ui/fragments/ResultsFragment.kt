@@ -105,7 +105,9 @@ class ResultsFragment(private val type: TYPE) : DaggerFragment() {
 
 
     private fun setButtonsListeners() {
+        fresults_sort.setOnClickListener {
 
+        }
     }
 
     override fun onDestroy() {

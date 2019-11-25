@@ -11,6 +11,7 @@ data class Meal (
     var id: Int = 0,
     var name: String = "",
     var category: String = "",
+    var tags: String = "",
     var instructions: String = "",
     var thumbURL: String = "",
     @Ignore

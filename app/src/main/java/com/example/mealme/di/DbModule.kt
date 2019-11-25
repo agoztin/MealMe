@@ -17,9 +17,10 @@ class DbModule {
     @Provides
     @Singleton
     internal fun provideDatabase(application: Application): AppDatabase {
-        return Room.databaseBuilder(
-            application, AppDatabase::class.java, "database.db")
-            .allowMainThreadQueries().build()
+        return Room.databaseBuilder(application, AppDatabase::class.java, "database.db")
+            .fallbackToDestructiveMigration()
+            .allowMainThreadQueries()
+            .build()
     }
 
     @Provides
