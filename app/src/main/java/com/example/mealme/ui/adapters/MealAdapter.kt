@@ -1,22 +1,14 @@
 package com.example.mealme.ui.adapters
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.mealme.R
 import com.example.mealme.model.Meal
-import com.example.mealme.util.ImageFetcher
-import kotlinx.coroutines.*
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.net.URL
-import kotlin.coroutines.CoroutineContext
 
 
 class MealAdapter(val mealList: ArrayList<Meal>, val onItemClickListener: OnItemClickListener) :
@@ -25,8 +17,9 @@ class MealAdapter(val mealList: ArrayList<Meal>, val onItemClickListener: OnItem
     val TAG = this.javaClass.name
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.meal_item, parent, false)
 
-        return MealViewHolder(LayoutInflater.from(parent.context), parent)
+        return MealViewHolder(view)
     }
 
     override fun getItemCount(): Int = mealList.size
@@ -39,17 +32,9 @@ class MealAdapter(val mealList: ArrayList<Meal>, val onItemClickListener: OnItem
     /**
      * ViewHolder
      */
-    class MealViewHolder(inflater: LayoutInflater, val parent: ViewGroup) :
-        RecyclerView.ViewHolder(inflater.inflate(R.layout.meal_item, parent, false)), CoroutineScope {
+    class MealViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val TAG = this.javaClass.name
-
-//        private var job = Job()
-
-        override val coroutineContext: CoroutineContext
-            get() = Dispatchers.Main
-        //+ job
-
 
         fun bind(meal: Meal, onClickListener: OnItemClickListener) {
             val title = itemView.findViewById<TextView>(R.id.meal_item_title)
@@ -61,47 +46,14 @@ class MealAdapter(val mealList: ArrayList<Meal>, val onItemClickListener: OnItem
             category.text = meal.category
             tags.text = meal.tags
 
+            Glide.with(itemView)
+                .load(meal.thumbURL)
+                .placeholder(R.drawable.ic_image)
+                .into(image)
+
             itemView.setOnClickListener {
                 onClickListener.OnItemClick(meal)
             }
-
-            launch {
-                //fetchImage(image, meal)
-                ImageFetcher.get(image, meal.thumbURL, meal.imageFileName)
-            }
-        }
-
-        suspend fun fetchImage(image: ImageView, meal: Meal) {
-            var bitmap: Bitmap? = null
-
-            // Create image name to local store
-            val filename = meal.id.toString() + meal.thumbURL.takeLastWhile { it != '/' }
-            val file = File(image.context.filesDir, filename)
-
-            withContext(Dispatchers.IO) {
-                try {
-                    if (file.exists() && file.length() > 0) {
-                        val inputStream = FileInputStream(file)
-                        bitmap = BitmapFactory.decodeStream(inputStream)
-                        inputStream.close()
-                    } else {
-                        val inputStream = URL(meal.thumbURL).openStream()
-                        bitmap = BitmapFactory.decodeStream(inputStream)
-                        val outputStrem = FileOutputStream(file)
-                        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, outputStrem)
-                        outputStrem.apply {
-                            flush()
-                            close()
-                        }
-                        inputStream.close()
-                    }
-                } catch (e: Exception) {
-                    Log.e(">>>>>>>", "Exception 1, Something went wrong!")
-                    e.printStackTrace()
-                }
-            }
-
-            image.setImageBitmap(bitmap)
         }
     }
 

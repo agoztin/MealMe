@@ -10,11 +10,9 @@ import android.view.*
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.mealme.viewmodel.MainViewModel
-import com.example.mealme.util.ImageFetcher
 import kotlinx.android.synthetic.main.detail_fragment.*
-import kotlinx.coroutines.launch
 
 
 class DetailFragment : Fragment() {
@@ -76,10 +74,10 @@ class DetailFragment : Fragment() {
                 }
             }
 
-            // Fetch image from local or remote if needed
-            viewLifecycleOwner.lifecycleScope.launch {
-                ImageFetcher.get(fdetail_image, meal.thumbURL, meal.imageFileName)
-            }
+            Glide.with(context!!)
+                .load(meal.thumbURL)
+                .placeholder(R.drawable.ic_image)
+                .into(fdetail_image)
 
             // Enable or not fab button
             viewModel.loadMeal(meal.id).observe(this, Observer { storedMeal ->
