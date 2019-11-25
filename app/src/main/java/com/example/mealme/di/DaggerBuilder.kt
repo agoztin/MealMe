@@ -5,6 +5,7 @@ import com.example.mealme.App
 import com.example.mealme.net.repositories.MealsRepository
 import com.example.mealme.ui.activities.MainActivity
 import com.example.mealme.ui.fragments.ResultsFragment
+import com.example.mealme.ui.fragments.SearchFragment
 import com.example.mealme.viewmodel.MainViewModel
 import dagger.Binds
 import dagger.Module
@@ -19,6 +20,9 @@ abstract class DaggerBuilder(val app: App) {
 
     @ContributesAndroidInjector
     abstract fun bindMainActivity(): MainActivity
+
+    @ContributesAndroidInjector
+    abstract fun bindSearchFragment(): SearchFragment
 
     @ContributesAndroidInjector
     abstract fun bindResultsFragment(): ResultsFragment

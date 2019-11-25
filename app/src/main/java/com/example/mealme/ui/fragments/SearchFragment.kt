@@ -7,11 +7,14 @@ import kotlinx.android.synthetic.main.search_fragment.*
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.ViewModelProvider
 import com.example.mealme.R
 import com.example.mealme.viewmodel.MainViewModel
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 
-class SearchFragment : Fragment() {
+class SearchFragment : DaggerFragment() {
 
     companion object {
         fun newInstance() = SearchFragment()
@@ -19,6 +22,7 @@ class SearchFragment : Fragment() {
 
     private val TAG = this.javaClass.name
     private lateinit var viewModel: MainViewModel
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
 
     override fun onCreateView(
@@ -27,7 +31,7 @@ class SearchFragment : Fragment() {
     ): View {
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this)[MainViewModel::class.java]
+            ViewModelProviders.of(this, viewModelFactory)[MainViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
         return inflater.inflate(R.layout.search_fragment, container, false)

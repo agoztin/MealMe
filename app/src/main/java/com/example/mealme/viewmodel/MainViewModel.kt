@@ -11,16 +11,9 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
 
-//    @Inject lateinit var mealsRepository: MealsRepository
-    val mealsRepository: MealsRepository
+    @Inject lateinit var mealsRepository: MealsRepository
     val selectedMeal = MutableLiveData<Meal>()
 
-    init {
-        val db = AppDatabase.getInstance(application)
-        val mealsDao = db.mealDao()
-        val ingredientDao = db.ingredientDao()
-        mealsRepository = MealsRepository(mealsDao, ingredientDao)
-    }
 
     fun getMealsLiveData(): LiveData<ArrayList<Meal>?> = mealsRepository.meals
 
