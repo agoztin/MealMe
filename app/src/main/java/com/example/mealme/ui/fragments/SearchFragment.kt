@@ -21,9 +21,9 @@ class SearchFragment : DaggerFragment() {
     }
 
     private val TAG = this.javaClass.name
-    private lateinit var viewModel: MainViewModel
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

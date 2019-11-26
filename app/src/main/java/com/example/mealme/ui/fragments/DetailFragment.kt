@@ -10,21 +10,27 @@ import android.view.*
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.mealme.viewmodel.MainViewModel
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.detail_fragment.*
+import javax.inject.Inject
 
 
-class DetailFragment : Fragment() {
+class DetailFragment : DaggerFragment() {
 
     companion object {
         fun newInstance() = DetailFragment()
     }
 
     private val TAG = this.javaClass.name
-    private lateinit var viewModel: MainViewModel
+
     private var mealInstance: Meal? = null
     private var mealStored = false
+
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +38,7 @@ class DetailFragment : Fragment() {
     ): View {
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this)[MainViewModel::class.java]
+            ViewModelProviders.of(this, viewModelFactory)[MainViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
         // Set the observers

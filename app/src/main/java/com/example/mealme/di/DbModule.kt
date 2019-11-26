@@ -1,11 +1,11 @@
 package com.example.mealme.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.example.mealme.db.AppDatabase
 import com.example.mealme.db.IngredientDao
 import com.example.mealme.db.MealDao
-import com.example.mealme.model.Meal
 import com.example.mealme.net.repositories.MealsRepository
 import dagger.Module
 import dagger.Provides
