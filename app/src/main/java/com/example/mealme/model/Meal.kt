@@ -3,9 +3,10 @@ package com.example.mealme.model
 import android.util.Log
 import androidx.room.Entity
 import androidx.room.Ignore
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(indices = [Index(value = ["id"])])
 data class Meal (
     @PrimaryKey
     var id: Int = 0,

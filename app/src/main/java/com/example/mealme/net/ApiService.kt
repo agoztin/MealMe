@@ -16,12 +16,12 @@ object ApiService {
 
 
     val instance: MealDBService by lazy {
-        val interceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-        val client = OkHttpClient.Builder().apply {
-            addInterceptor(interceptor)
-        }.build()
+//        val interceptor = HttpLoggingInterceptor().apply {
+//            level = HttpLoggingInterceptor.Level.BODY
+//        }
+//        val client = OkHttpClient.Builder().apply {
+//            addInterceptor(interceptor)
+//        }.build()
 
         val deserializer = GsonBuilder().registerTypeAdapter(Meal::class.java, MealDeserializer()).create()
 

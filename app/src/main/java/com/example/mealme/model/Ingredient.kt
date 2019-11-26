@@ -2,19 +2,20 @@ package com.example.mealme.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import retrofit2.http.GET
 
 @Entity(
-    foreignKeys = arrayOf(
+    indices = [Index(value = ["idMeal"])],
+    foreignKeys = [
         ForeignKey(
             entity = Meal::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("idMeal"),
-            onDelete = ForeignKey.CASCADE
-        )
-    )
+            parentColumns = ["id"],
+            childColumns = ["idMeal"],
+            onDelete = ForeignKey.CASCADE)
+    ]
 )
 data class Ingredient(
     var idMeal: Int = 0,

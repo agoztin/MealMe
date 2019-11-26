@@ -13,7 +13,7 @@ import com.example.mealme.model.Meal
 @Database(entities = arrayOf(
     Meal::class,
     Ingredient::class
-), version = 3)
+), version = 4, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun mealDao(): MealDao
     abstract fun ingredientDao(): IngredientDao
