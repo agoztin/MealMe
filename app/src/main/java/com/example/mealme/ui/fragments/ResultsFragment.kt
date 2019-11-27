@@ -1,5 +1,6 @@
 package com.example.mealme.ui.fragments
 
+import android.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mealme.R
 import com.example.mealme.viewmodel.MainViewModel
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.dialog_sort.*
 import kotlinx.android.synthetic.main.results_fragment.*
 import javax.inject.Inject
 
@@ -34,10 +36,7 @@ class ResultsFragment(private val type: TYPE) : DaggerFragment() {
     lateinit var viewModel: MainViewModel
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory)[MainViewModel::class.java]
@@ -46,6 +45,7 @@ class ResultsFragment(private val type: TYPE) : DaggerFragment() {
         // Set the observers
         setObservers()
 
+        // Initialize RecyclerView adapter
         mealAdapter = MealAdapter(mealsList, object: MealAdapter.OnItemClickListener {
             override fun OnItemClick(item: Meal) {
                 viewModel.selectMeal(item)
@@ -106,7 +106,32 @@ class ResultsFragment(private val type: TYPE) : DaggerFragment() {
 
     private fun setButtonsListeners() {
         fresults_sort.setOnClickListener {
+            val dialog = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+                .setView(R.layout.dialog_sort)
+                .create()
 
+            dialog.show()
+
+            dialog.dsort_btn_sort.setOnClickListener {
+                if (dialog.dsort_gd_asc.isChecked) {
+                    if (dialog.dsort_gf_name.isChecked) {
+                        mealsList.sortBy { it.name }
+                    }
+                    else if (dialog.dsort_gf_category.isChecked) {
+                        mealsList.sortBy { it.category }
+                    }
+                }
+                else if (dialog.dsort_gd_desc.isChecked) {
+                    if (dialog.dsort_gf_name.isChecked) {
+                        mealsList.sortByDescending { it.name }
+                    }
+                    else if (dialog.dsort_gf_category.isChecked) {
+                        mealsList.sortByDescending { it.category }
+                    }
+                }
+                mealAdapter.notifyDataSetChanged()
+                dialog.dismiss()
+            }
         }
     }
 

@@ -62,10 +62,7 @@ class DetailFragment : DaggerFragment() {
 
             // Complete title, ingredients and instructions
             fdetail_title.text = meal.name
-            fdetail_instructions.text = getString(R.string.instructions)
-                .plus("\n")
-                .plus(meal.instructions)
-                .plus("\n".repeat(6))
+            fdetail_instructions.text = meal.instructions.plus("\n".repeat(6))
 
             meal.ingredients.forEach { mealIngredient ->
                 if (!mealIngredient.name.isEmpty()) {
@@ -80,6 +77,7 @@ class DetailFragment : DaggerFragment() {
                 }
             }
 
+            // Download image
             Glide.with(context!!)
                 .load(meal.thumbURL)
                 .placeholder(R.drawable.ic_image)
