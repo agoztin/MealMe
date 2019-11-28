@@ -9,9 +9,16 @@
     <RadioGroup
         android:id="@+id/dsort_group_field"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content">
 
-        >
+        <RadioButton
+            android:id="@+id/dsort_gf_shuffle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Shuffle"
+            android:checked="true"
+            style="@style/DialogSort.RadioButton"
+            />
 
         <RadioButton
             android:id="@+id/dsort_gf_name"
@@ -35,15 +42,12 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_margin="6dp"
-        android:background="#FFFFFF"
-        />
+        android:background="#FFFFFF"/>
 
     <RadioGroup
         android:id="@+id/dsort_group_direction"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        >
+        android:layout_height="wrap_content">
 
         <RadioButton
             android:id="@+id/dsort_gd_asc"

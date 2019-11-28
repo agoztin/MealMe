@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import com.example.mealme.R
+import com.example.mealme.util.ListOrder
 import com.example.mealme.viewmodel.MainViewModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.dialog_sort.*
@@ -69,7 +70,7 @@ class ResultsFragment(private val type: TYPE) : DaggerFragment() {
         // Set type of result
         when(type) {
             TYPE.FAVOURITES -> {
-                fresults.setBackgroundColor(Color.GRAY)
+                fresults.setBackgroundColor(Color.DKGRAY)
                 fresults.setPadding(16, 16, 16, 16)
                 viewModel.loadFavouritesMeals()
                 fresults_title.text = "FAVOURITES"
@@ -96,8 +97,8 @@ class ResultsFragment(private val type: TYPE) : DaggerFragment() {
             } else {
                 mealsList.clear()
                 mealsList.addAll(meals)
-                mealAdapter.notifyDataSetChanged()
 
+                sortMealsList()
                 showResults(true)
             }
         })
@@ -105,40 +106,15 @@ class ResultsFragment(private val type: TYPE) : DaggerFragment() {
 
 
     private fun setButtonsListeners() {
-        fresults_sort.setOnClickListener {
-            val dialog = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
-                .setView(R.layout.dialog_sort)
-                .create()
-
-            dialog.show()
-
-            dialog.dsort_btn_sort.setOnClickListener {
-                if (dialog.dsort_gd_asc.isChecked) {
-                    if (dialog.dsort_gf_name.isChecked) {
-                        mealsList.sortBy { it.name }
-                    }
-                    else if (dialog.dsort_gf_category.isChecked) {
-                        mealsList.sortBy { it.category }
-                    }
-                }
-                else if (dialog.dsort_gd_desc.isChecked) {
-                    if (dialog.dsort_gf_name.isChecked) {
-                        mealsList.sortByDescending { it.name }
-                    }
-                    else if (dialog.dsort_gf_category.isChecked) {
-                        mealsList.sortByDescending { it.category }
-                    }
-                }
-                mealAdapter.notifyDataSetChanged()
-                dialog.dismiss()
-            }
-        }
+        fresults_sort.setOnClickListener { showSortDialog() }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
         viewModel.cancelSearch()
     }
+
 
     private fun showResults(show: Boolean) {
         if(show) {
@@ -150,5 +126,81 @@ class ResultsFragment(private val type: TYPE) : DaggerFragment() {
             fresults_title.visibility = View.INVISIBLE
             fresults_recyclerview.visibility = View.INVISIBLE
         }
+    }
+
+
+    fun showSortDialog() {
+        val dialog = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+            .setView(R.layout.dialog_sort)
+            .create()
+
+        with(dialog) {
+            show()
+
+            // Restore state
+            with(viewModel.listOrder) {
+                when(field) {
+                    ListOrder.FIELD.NAME -> dsort_gf_name.isChecked = true
+                    ListOrder.FIELD.CATEGORY -> dsort_gf_category.isChecked = true
+                    else -> dsort_gf_shuffle.isChecked = true
+                }
+
+                if (field != ListOrder.FIELD.SHUFFLE) {
+                    when (order) {
+                        ListOrder.ORDER.ASC -> dsort_gd_asc.isChecked = true
+                        ListOrder.ORDER.DESC -> dsort_gd_desc.isChecked = true
+                    }
+                }
+            }
+
+            // Set listeners
+            dsort_gf_shuffle.setOnCheckedChangeListener { _, isChecked ->
+                with(dsort_gd_asc) {
+                    isEnabled = !isChecked
+                    setChecked(!isChecked)
+                }
+
+                with(dsort_gd_desc) {
+                    isEnabled = !isChecked
+                    if (isChecked) {
+                        setChecked(false)
+                    }
+                }
+
+                viewModel.listOrder.field = ListOrder.FIELD.SHUFFLE
+            }
+
+            dsort_btn_sort.setOnClickListener {
+                viewModel.listOrder.field = when(dsort_group_field.checkedRadioButtonId) {
+                    R.id.dsort_gf_name -> ListOrder.FIELD.NAME
+                    R.id.dsort_gf_category -> ListOrder.FIELD.CATEGORY
+                    else -> ListOrder.FIELD.SHUFFLE
+                }
+
+                viewModel.listOrder.order = when(dsort_group_direction.checkedRadioButtonId) {
+                    R.id.dsort_gd_desc -> ListOrder.ORDER.DESC
+                    else -> ListOrder.ORDER.ASC
+                }
+
+                sortMealsList()
+
+                dismiss()
+            }
+        }
+    }
+
+
+    private fun sortMealsList() {
+        with(viewModel.listOrder) {
+            when(field) {
+                ListOrder.FIELD.NAME -> mealsList.sortBy { it.name }
+                ListOrder.FIELD.CATEGORY -> mealsList.sortBy { it.category }
+                else -> mealsList.shuffle()
+            }
+
+            if (order == ListOrder.ORDER.DESC)
+                mealsList.reverse()
+        }
+        mealAdapter.notifyDataSetChanged()
     }
 }

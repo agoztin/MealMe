@@ -3,6 +3,7 @@ package com.example.mealme.viewmodel
 import androidx.lifecycle.*
 import com.example.mealme.model.Meal
 import com.example.mealme.net.repositories.MealsRepository
+import com.example.mealme.util.ListOrder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -12,6 +13,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
     @Inject lateinit var mealsRepository: MealsRepository
 
     val selectedMeal = MutableLiveData<Meal>()
+    var listOrder = ListOrder()
 
     fun getMealsLiveData(): LiveData<ArrayList<Meal>?> = mealsRepository.meals
 
