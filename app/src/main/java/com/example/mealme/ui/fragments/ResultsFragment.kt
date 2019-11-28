@@ -19,17 +19,21 @@ import kotlinx.android.synthetic.main.results_fragment.*
 import javax.inject.Inject
 
 
-class ResultsFragment(private val type: TYPE) : DaggerFragment() {
+class ResultsFragment : DaggerFragment() {
 
     companion object {
         enum class TYPE {
             FAVOURITES, SEARCH
         }
 
-        fun newInstance(type: TYPE): ResultsFragment = ResultsFragment(type)
+        fun newInstance(type: TYPE): ResultsFragment {
+            val bundle = Bundle().apply { putSerializable("type", type) }
+            return ResultsFragment().apply { arguments = bundle }
+        }
     }
 
     private val TAG = this.javaClass.name
+    private var fragmentType = TYPE.SEARCH
     private var mealsList = ArrayList<Meal>()
     private lateinit var mealAdapter: MealAdapter
 
@@ -38,6 +42,8 @@ class ResultsFragment(private val type: TYPE) : DaggerFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        fragmentType = arguments?.getSerializable("type") as TYPE
 
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory)[MainViewModel::class.java]
@@ -68,7 +74,7 @@ class ResultsFragment(private val type: TYPE) : DaggerFragment() {
         // Initially hides everything
         showResults(false)
         // Set type of result
-        when(type) {
+        when(fragmentType) {
             TYPE.FAVOURITES -> {
                 fresults.setBackgroundColor(Color.DKGRAY)
                 fresults.setPadding(16, 16, 16, 16)
