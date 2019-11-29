@@ -2,19 +2,20 @@ package com.example.mealme.net.repositories
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.mealme.App
 import com.example.mealme.db.IngredientDao
 import com.example.mealme.db.MealDao
 import com.example.mealme.model.Ingredient
 import com.example.mealme.model.Meal
 import com.example.mealme.model.Meals
-import com.example.mealme.net.ApiService
+import com.example.mealme.net.MealDBService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class MealsRepository @Inject constructor(val mealsDao: MealDao, val ingredientDao: IngredientDao) {
+class MealsRepository
+    @Inject
+    constructor(val mealsDao: MealDao, val ingredientDao: IngredientDao, val apiService: MealDBService) {
 
     val TAG = this.javaClass.name
 
@@ -27,7 +28,7 @@ class MealsRepository @Inject constructor(val mealsDao: MealDao, val ingredientD
     fun search(mealName: String) {
         meals.value = null
         // Web Service call
-        lastSearch = ApiService.instance.searchByMeal(mealName)
+        lastSearch = apiService.searchByMeal(mealName)
         lastSearch?.enqueue(object: Callback<Meals> {
             override fun onFailure(call: Call<Meals>, t: Throwable) {
                 Log.e(TAG, "Error: ${t.message}")

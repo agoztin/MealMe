@@ -8,9 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor() : ViewModel() {
-
-    @Inject lateinit var mealsRepository: MealsRepository
+class MainViewModel @Inject constructor(var mealsRepository: MealsRepository) : ViewModel() {
 
     val selectedMeal = MutableLiveData<Meal>()
     var listOrder = ListOrder()
