@@ -1,7 +1,6 @@
 package com.example.mealme.di
 
 import com.example.mealme.App
-import com.example.mealme.di.viewmodel.ViewModelBuilder
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -12,9 +11,7 @@ import javax.inject.Singleton
     modules = [
         AndroidSupportInjectionModule::class,
         AppModule::class,
-        ActivityBuilder::class,
-        ViewModelBuilder::class,
-        DbModule::class
+        ActivityBuilder::class
     ]
 )
 interface AppComponent : AndroidInjector<App> {

@@ -97,7 +97,7 @@ class ResultsFragment : DaggerFragment() {
 
 
     private fun setObservers() {
-        viewModel.getMealsLiveData().observe(this, Observer { meals ->
+        viewModel.searchResult.observe(this, Observer { meals ->
             if (meals == null) {
                 showResults(false)
             } else {

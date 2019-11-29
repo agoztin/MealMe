@@ -8,14 +8,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor() : ViewModel() {
-
-    @Inject lateinit var mealsRepository: MealsRepository
+class MainViewModel @Inject constructor(var mealsRepository: MealsRepository) : ViewModel() {
 
     val selectedMeal = MutableLiveData<Meal>()
     var listOrder = ListOrder()
+    val searchResult: LiveData<ArrayList<Meal>?> = mealsRepository.meals
 
-    fun getMealsLiveData(): LiveData<ArrayList<Meal>?> = mealsRepository.meals
 
     fun searchMeals(mealName: String) = viewModelScope.launch {
         mealsRepository.search(mealName)
