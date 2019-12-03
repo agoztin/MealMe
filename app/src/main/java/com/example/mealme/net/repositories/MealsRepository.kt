@@ -40,16 +40,19 @@ class MealsRepository
         ingredientDao.insertIngredients(meal.ingredients)
     }
 
+
     suspend fun load(mealID: Int): Meal? {
         val meal = mealsDao.get(mealID)
         meal?.ingredients = ingredientDao.get(mealID) as ArrayList<Ingredient>
         return meal
     }
 
+
     suspend fun delete(meal: Meal) {
         mealsDao.delete(meal.id)
         ingredientDao.delete(meal.id)
     }
+
 
     suspend fun loadFavourites() {
         mealsList.value = RepositoryResult.loading()
@@ -59,6 +62,7 @@ class MealsRepository
         }
         mealsList.value = RepositoryResult.success(mealsLoaded as ArrayList<Meal>)
     }
+
 
     fun loadSearchResult() {
         mealsList.value = if (searchResult == null) RepositoryResult.loading() else RepositoryResult.success(searchResult)

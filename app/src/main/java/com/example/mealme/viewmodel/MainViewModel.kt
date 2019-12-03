@@ -15,10 +15,8 @@ class MainViewModel @Inject constructor(var mealsRepository: MealsRepository) : 
     val mealsList = mealsRepository.mealsList
 
 
-    fun searchMeals(mealName: String) {
-        viewModelScope.launch {
-            mealsRepository.search(mealName)
-        }
+    fun searchMeals(mealName: String) = viewModelScope.launch {
+        mealsRepository.search(mealName)
     }
 
     fun saveMeal(meal: Meal) = viewModelScope.launch(Dispatchers.IO) {
