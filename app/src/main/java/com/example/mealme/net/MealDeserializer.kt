@@ -1,6 +1,5 @@
 package com.example.mealme.net
 
-import android.util.Log
 import com.example.mealme.model.Ingredient
 import com.example.mealme.model.Meal
 import com.google.gson.JsonDeserializationContext

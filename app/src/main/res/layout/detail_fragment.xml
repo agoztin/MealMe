@@ -29,7 +29,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -39,6 +38,7 @@
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="16dp"
+                android:contentDescription="@string/meal_image"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    >
+                    tools:ignore="UselessParent">
 
                     <TextView
                         android:layout_width="wrap_content"

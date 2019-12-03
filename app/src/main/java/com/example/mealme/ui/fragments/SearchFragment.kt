@@ -2,7 +2,6 @@ package com.example.mealme.ui.fragments
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.search_fragment.*
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.view.*

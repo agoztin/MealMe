@@ -1,6 +1,5 @@
 package com.example.mealme.model
 
-import android.util.Log
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.Index

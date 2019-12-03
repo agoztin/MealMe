@@ -2,7 +2,6 @@ package com.example.mealme.ui.fragments
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.mealme.R
 import com.example.mealme.model.Meal

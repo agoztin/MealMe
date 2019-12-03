@@ -1,6 +1,5 @@
 package com.example.mealme.db
 
-import android.util.Log
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE

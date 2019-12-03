@@ -80,13 +80,13 @@ class ResultsFragment : DaggerFragment() {
                 fresults.setBackgroundColor(Color.DKGRAY)
                 fresults.setPadding(16, 16, 16, 16)
                 viewModel.loadFavouritesMeals()
-                fresults_title.text = "FAVOURITES"
-                fresults_error.text = "NO FAVOURITES ADDED"
+                fresults_title.text = getString(R.string.favourites)
+                fresults_error.text = getString(R.string.no_favourites_added)
             }
             TYPE.SEARCH -> {
                 viewModel.loadSearchResult()
-                fresults_title.text = "SEARCH RESULT"
-                fresults_error.text = "NO MEALS FOUND"
+                fresults_title.text = getString(R.string.search_result)
+                fresults_error.text = getString(R.string.no_meals_found)
             }
         }
         // Set buttons handlers
@@ -154,6 +154,8 @@ class ResultsFragment : DaggerFragment() {
                 }
 
                 if (field != ListOrder.FIELD.SHUFFLE) {
+                    dsort_gd_asc.isEnabled = true
+                    dsort_gd_desc.isEnabled = true
                     when (order) {
                         ListOrder.ORDER.ASC -> dsort_gd_asc.isChecked = true
                         ListOrder.ORDER.DESC -> dsort_gd_desc.isChecked = true

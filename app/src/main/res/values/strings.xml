@@ -3,4 +3,20 @@
     <string name="fmain_search_hint">Search Meal, Ingredients, Category</string>
     <string name="instructions">INSTRUCTIONS</string>
     <string name="ingredients">INGREDIENTS</string>
+    <string name="meal_image">Meal image</string>
+    <string name="tags">Tags:</string>
+    <string name="order_by">Order by</string>
+    <string name="start_search">Start search</string>
+    <!-- Sort dialog -->
+    <string name="shuffle">Shuffle</string>
+    <string name="name">Name</string>
+    <string name="category">Category</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+
+    <string name="favourites">FAVOURITES</string>
+    <string name="no_meals_found">NO MEALS FOUND</string>
+    <string name="no_favourites_added">NO FAVOURITES ADDED</string>
+    <string name="search_result">SEARCH RESULT</string>
+    <string name="sort">SORT</string>
 </resources>

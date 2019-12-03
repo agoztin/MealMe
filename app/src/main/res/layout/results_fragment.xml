@@ -33,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        android:text="NO MEALS FOUND"
+        android:text="@string/no_meals_found"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fresults_title" />
@@ -54,6 +54,7 @@
         android:id="@+id/fresults_sort"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/order_by"
         android:src="@android:drawable/ic_menu_sort_by_size"
         android:background="@android:color/transparent"
         android:tint="#FFFFFF"

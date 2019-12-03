@@ -4,8 +4,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
-import retrofit2.http.GET
 
 @Entity(
     indices = [Index(value = ["idMeal"])],
