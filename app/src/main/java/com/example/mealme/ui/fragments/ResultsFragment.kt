@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import com.example.mealme.R
+import com.example.mealme.net.repositories.RepositoryResult
 import com.example.mealme.util.ListOrder
 import com.example.mealme.viewmodel.MainViewModel
 import dagger.android.support.DaggerFragment
@@ -101,12 +102,12 @@ class ResultsFragment : DaggerFragment() {
     private fun setObservers() {
         viewModel.mealsList.observe(this, Observer { meals ->
             mealsList.clear()
-            if (meals != null) {
-                if (meals.isEmpty()) {
+            if (meals.status == RepositoryResult.Status.SUCCESS) {
+                if (meals.data!!.isEmpty()) {
                     fresults_error.visibility = View.VISIBLE
                 } else {
                     fresults_error.visibility = View.INVISIBLE
-                    mealsList.addAll(meals)
+                    mealsList.addAll(meals.data)
                 }
                 sortMealsList()
                 showResults(true)

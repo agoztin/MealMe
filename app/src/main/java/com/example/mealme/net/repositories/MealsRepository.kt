@@ -1,6 +1,5 @@
 package com.example.mealme.net.repositories
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.mealme.db.IngredientDao
 import com.example.mealme.db.MealDao
@@ -16,22 +15,19 @@ class MealsRepository
 
     val TAG = this.javaClass.name
     var searchResult: ArrayList<Meal>? = null
-    var mealsList = MutableLiveData<ArrayList<Meal>?>()
+    var mealsList = MutableLiveData<RepositoryResult<ArrayList<Meal>?>>()
 
 
-    suspend fun search(mealName: String): ArrayList<Meal>? {
+    suspend fun search(mealName: String) {
         searchResult = null
-        mealsList.value = null
-
+        mealsList.value = RepositoryResult.loading()
         try {
             val lastSearch = apiService.searchByMeal(mealName)
             searchResult = lastSearch.meals ?: ArrayList()
 
-            mealsList.value = searchResult
-
-            return searchResult
+            mealsList.value = RepositoryResult.success(searchResult)
         } catch (e: Exception) {
-            return ArrayList()
+            mealsList.value = RepositoryResult.error("${e.message}")
         }
     }
 
@@ -56,14 +52,15 @@ class MealsRepository
     }
 
     suspend fun loadFavourites() {
+        mealsList.value = RepositoryResult.loading()
         val mealsLoaded = mealsDao.getAll()
         mealsLoaded.forEach { meal ->
             meal.ingredients = ingredientDao.get(meal.id) as ArrayList<Ingredient>
         }
-        mealsList.value = mealsLoaded as ArrayList<Meal>
+        mealsList.value = RepositoryResult.success(mealsLoaded as ArrayList<Meal>)
     }
 
     fun loadSearchResult() {
-        mealsList.value = searchResult
+        mealsList.value = if (searchResult == null) RepositoryResult.loading() else RepositoryResult.success(searchResult)
     }
 }
