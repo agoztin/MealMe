@@ -1,7 +1,6 @@
 package com.example.mealme.ui.fragments
 
 import android.app.AlertDialog
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,7 +8,6 @@ import com.example.mealme.model.Meal
 import com.example.mealme.ui.adapters.MealAdapter
 import android.graphics.Color
 import android.view.*
-import androidx.lifecycle.ViewModelProvider
 import com.example.mealme.R
 import com.example.mealme.net.repositories.RepositoryResult
 import com.example.mealme.util.ListOrder
@@ -38,17 +36,12 @@ class ResultsFragment : DaggerFragment() {
     private var mealsList = ArrayList<Meal>()
     private lateinit var mealAdapter: MealAdapter
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var viewModel: MainViewModel
+    @Inject lateinit var viewModel: MainViewModel
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         fragmentType = arguments?.getSerializable("type") as TYPE
-
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory)[MainViewModel::class.java]
-        } ?: throw Exception("Invalid Activity")
 
         // Set the observers
         setObservers()

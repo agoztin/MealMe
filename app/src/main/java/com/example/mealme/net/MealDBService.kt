@@ -8,6 +8,7 @@ interface MealDBService {
 
     companion object {
         val URL = "https://www.themealdb.com/api/json/v1/1/"
+//        val URL = "http://10.0.2.2:8080"
     }
 
     @GET("search.php")

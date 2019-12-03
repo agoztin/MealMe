@@ -1,6 +1,5 @@
 package com.example.mealme.ui.fragments
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.example.mealme.R
@@ -9,7 +8,6 @@ import android.view.*
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.mealme.viewmodel.MainViewModel
 import dagger.android.support.DaggerFragment
@@ -28,17 +26,12 @@ class DetailFragment : DaggerFragment() {
     private var mealInstance: Meal? = null
     private var mealStored = false
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: MainViewModel
+    @Inject lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory)[MainViewModel::class.java]
-        } ?: throw Exception("Invalid Activity")
 
         // Set the observers
         setObservers()
