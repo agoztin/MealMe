@@ -80,10 +80,12 @@ class ResultsFragment : DaggerFragment() {
                 fresults.setPadding(16, 16, 16, 16)
                 viewModel.loadFavouritesMeals()
                 fresults_title.text = "FAVOURITES"
+                fresults_error.text = "NO FAVOURITES ADDED"
             }
             TYPE.SEARCH -> {
                 viewModel.loadSearchResult()
                 fresults_title.text = "SEARCH RESULT"
+                fresults_error.text = "NO MEALS FOUND"
             }
         }
         // Set buttons handlers
@@ -97,15 +99,19 @@ class ResultsFragment : DaggerFragment() {
 
 
     private fun setObservers() {
-        viewModel.searchResult.observe(this, Observer { meals ->
-            if (meals == null) {
-                showResults(false)
-            } else {
-                mealsList.clear()
-                mealsList.addAll(meals)
-
+        viewModel.mealsList.observe(this, Observer { meals ->
+            mealsList.clear()
+            if (meals != null) {
+                if (meals.isEmpty()) {
+                    fresults_error.visibility = View.VISIBLE
+                } else {
+                    fresults_error.visibility = View.INVISIBLE
+                    mealsList.addAll(meals)
+                }
                 sortMealsList()
                 showResults(true)
+            } else {
+                showResults(false)
             }
         })
     }
@@ -113,12 +119,6 @@ class ResultsFragment : DaggerFragment() {
 
     private fun setButtonsListeners() {
         fresults_sort.setOnClickListener { showSortDialog() }
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.cancelSearch()
     }
 
 
@@ -130,12 +130,13 @@ class ResultsFragment : DaggerFragment() {
         } else {
             fresults_progress.visibility = View.VISIBLE
             fresults_title.visibility = View.INVISIBLE
+            fresults_error.visibility = View.INVISIBLE
             fresults_recyclerview.visibility = View.INVISIBLE
         }
     }
 
 
-    fun showSortDialog() {
+    private fun showSortDialog() {
         val dialog = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
             .setView(R.layout.dialog_sort)
             .create()

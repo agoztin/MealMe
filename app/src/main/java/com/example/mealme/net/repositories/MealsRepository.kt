@@ -6,11 +6,8 @@ import com.example.mealme.db.IngredientDao
 import com.example.mealme.db.MealDao
 import com.example.mealme.model.Ingredient
 import com.example.mealme.model.Meal
-import com.example.mealme.model.Meals
 import com.example.mealme.net.MealDBService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import java.lang.Exception
 import javax.inject.Inject
 
 class MealsRepository
@@ -18,36 +15,26 @@ class MealsRepository
     constructor(val mealsDao: MealDao, val ingredientDao: IngredientDao, val apiService: MealDBService) {
 
     val TAG = this.javaClass.name
+    var searchResult: ArrayList<Meal>? = null
+    var mealsList = MutableLiveData<ArrayList<Meal>?>()
 
-    val meals = MutableLiveData<ArrayList<Meal>?>()
-    var lastSearch: Call<Meals>? = null
 
-    var searchResult = ArrayList<Meal>()
-    var favourites = ArrayList<Meal>()
+    suspend fun search(mealName: String): ArrayList<Meal>? {
+        searchResult = null
+        mealsList.value = null
 
-    fun search(mealName: String) {
-        meals.value = null
-        // Web Service call
-        lastSearch = apiService.searchByMeal(mealName)
-        lastSearch?.enqueue(object: Callback<Meals> {
-            override fun onFailure(call: Call<Meals>, t: Throwable) {
-                Log.e(TAG, "Error: ${t.message}")
-                Log.e(TAG, "Detail: ${t.stackTrace.toList()}")
-            }
+        try {
+            val lastSearch = apiService.searchByMeal(mealName)
+            searchResult = lastSearch.meals ?: ArrayList()
 
-            override fun onResponse(call: Call<Meals>, response: Response<Meals>) {
-                if (response.isSuccessful) {
-                    searchResult = response.body()?.meals!!
-                    meals.value = searchResult
-                }
-            }
-        })
+            mealsList.value = searchResult
+
+            return searchResult
+        } catch (e: Exception) {
+            return ArrayList()
+        }
     }
 
-    fun cancelSearch() {
-        if (lastSearch != null)
-            lastSearch?.cancel()
-    }
 
     suspend fun save(meal: Meal) {
         mealsDao.insert(meal)
@@ -73,11 +60,10 @@ class MealsRepository
         mealsLoaded.forEach { meal ->
             meal.ingredients = ingredientDao.get(meal.id) as ArrayList<Ingredient>
         }
-        favourites = mealsLoaded as ArrayList<Meal>
-        meals.value = favourites
+        mealsList.value = mealsLoaded as ArrayList<Meal>
     }
 
     fun loadSearchResult() {
-        meals.value = searchResult
+        mealsList.value = searchResult
     }
 }

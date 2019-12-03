@@ -12,14 +12,14 @@ class MainViewModel @Inject constructor(var mealsRepository: MealsRepository) : 
 
     val selectedMeal = MutableLiveData<Meal>()
     var listOrder = ListOrder()
-    val searchResult: LiveData<ArrayList<Meal>?> = mealsRepository.meals
+    val mealsList = mealsRepository.mealsList
 
 
-    fun searchMeals(mealName: String) = viewModelScope.launch {
-        mealsRepository.search(mealName)
+    fun searchMeals(mealName: String) {
+        viewModelScope.launch {
+            mealsRepository.search(mealName)
+        }
     }
-
-    fun cancelSearch() = mealsRepository.cancelSearch()
 
     fun saveMeal(meal: Meal) = viewModelScope.launch(Dispatchers.IO) {
         mealsRepository.save(meal)
@@ -41,5 +41,7 @@ class MainViewModel @Inject constructor(var mealsRepository: MealsRepository) : 
         mealsRepository.loadFavourites()
     }
 
-    fun loadSearchResult() = mealsRepository.loadSearchResult()
+    fun loadSearchResult() = viewModelScope.launch {
+        mealsRepository.loadSearchResult()
+    }
 }

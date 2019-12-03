@@ -20,6 +20,13 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="FragmentMain.ResultError">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
     <style name="FragmentMain.ResultItem">
         <item name="android:textSize">18sp</item>
     </style>

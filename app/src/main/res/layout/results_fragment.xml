@@ -27,6 +27,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/fresults_error"
+        style="@style/FragmentMain.ResultError"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="NO MEALS FOUND"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fresults_title" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fresults_recyclerview"
         android:layout_width="0dp"
