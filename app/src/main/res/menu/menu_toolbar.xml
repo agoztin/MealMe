@@ -4,7 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <item
-        android:id="@+id/action_fab"
+        android:id="@+id/menu_action_new"
+        android:title="@string/favourites"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_add"
+        />
+
+    <item
+        android:id="@+id/menu_action_fab"
         android:title="@string/favourites"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_view_list"

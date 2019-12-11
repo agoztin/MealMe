@@ -1,5 +1,6 @@
 package com.example.mealme.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -32,12 +33,15 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.action_fab -> {
+            R.id.menu_action_fab -> {
                 supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.container, ResultsFragment.newInstance(ResultsFragment.Companion.TYPE.FAVOURITES))
                     .addToBackStack(null)
                     .commit()
+            }
+            R.id.menu_action_new -> {
+                startActivity(Intent(this, NewMealActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)

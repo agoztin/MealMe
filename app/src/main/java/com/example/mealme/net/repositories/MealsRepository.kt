@@ -6,6 +6,8 @@ import com.example.mealme.db.MealDao
 import com.example.mealme.model.Ingredient
 import com.example.mealme.model.Meal
 import com.example.mealme.net.MealDBService
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -66,5 +68,36 @@ class MealsRepository
 
     fun loadSearchResult() {
         mealsList.value = if (searchResult == null) RepositoryResult.loading() else RepositoryResult.success(searchResult)
+    }
+
+
+    suspend fun postMeal(meal: Meal): RepositoryResult<Meal> {
+        try {
+            val bodyMeal = JsonObject().apply {
+                addProperty("strMeal", meal.name)
+                addProperty("strDrinkAlternate", "")
+                addProperty("strCategory", meal.category)
+                addProperty("strArea", "")
+                addProperty("strInstructions", meal.instructions)
+                addProperty("strMealThumb", meal.thumbURL)
+                addProperty("strTags", meal.tags)
+                addProperty("strYoutube", "")
+                for (i in 1..20) {
+                    addProperty("strIngredient$i", meal.ingredients[i-1].name)
+                    addProperty("strMeasure$i", meal.ingredients[i-1].measure)
+                }
+                addProperty("strSource", "")
+            }
+
+            val body = JsonObject().apply {
+                add("meals", JsonArray().apply { add(bodyMeal) })
+            }
+
+            val result = apiService.postMeal(body)
+
+            return RepositoryResult.success(result.meals!![0])
+        } catch (e: Exception) {
+            return RepositoryResult.error("Error: ${e.message}")
+        }
     }
 }

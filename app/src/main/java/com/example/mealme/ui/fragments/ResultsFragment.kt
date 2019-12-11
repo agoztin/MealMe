@@ -104,7 +104,15 @@ class ResultsFragment : DaggerFragment() {
                 }
                 sortMealsList()
                 showResults(true)
-            } else {
+            }
+            else if(meals.status == RepositoryResult.Status.ERROR) {
+                AlertDialog.Builder(context)
+                    .setMessage(meals.message)
+                    .show()
+                fresults_error.visibility = View.VISIBLE
+                showResults(true)
+            }
+            else {
                 showResults(false)
             }
         })

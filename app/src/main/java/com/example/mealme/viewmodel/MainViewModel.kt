@@ -3,9 +3,11 @@ package com.example.mealme.viewmodel
 import androidx.lifecycle.*
 import com.example.mealme.model.Meal
 import com.example.mealme.net.repositories.MealsRepository
+import com.example.mealme.net.repositories.RepositoryResult
 import com.example.mealme.util.ListOrder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(var mealsRepository: MealsRepository) : ViewModel() {
@@ -41,5 +43,13 @@ class MainViewModel @Inject constructor(var mealsRepository: MealsRepository) : 
 
     fun loadSearchResult() = viewModelScope.launch {
         mealsRepository.loadSearchResult()
+    }
+
+    fun postMeal(meal: Meal): LiveData<Result<String>> = liveData {
+        val result = mealsRepository.postMeal(meal)
+        when(result.status) {
+            RepositoryResult.Status.SUCCESS -> emit(Result.success("Meal added with id ${result.data?.id}"))
+            else -> emit(Result.failure(Exception(result.message ?: "Unknown error")))
+        }
     }
 }
