@@ -24,12 +24,17 @@ android {
                         "room.expandProjection": "true"]
             }
         }
+        if (use_local_server) {
+            // MealMe-Server
+            buildConfigField("String", "SERVER_URL", '"http://10.0.2.2:8080"')
+            resValue("bool", "ADD_MEAL_ENABLED", "true")
+        } else {
+            // TheMealDB API
+            buildConfigField("String", "SERVER_URL", '"https://www.themealdb.com/api/json/v1/1/"')
+            resValue("bool", "ADD_MEAL_ENABLED", "false")
+        }
     }
     buildTypes {
-        all {
-//            buildConfigField("String", "SERVER_URL", '"https://www.themealdb.com/api/json/v1/1/"')
-             buildConfigField("String", "SERVER_URL", '"http://10.0.2.2:8080"')
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

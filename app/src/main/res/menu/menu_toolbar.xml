@@ -8,6 +8,7 @@
         android:title="@string/favourites"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_add"
+        android:visible="@bool/ADD_MEAL_ENABLED"
         />
 
     <item
